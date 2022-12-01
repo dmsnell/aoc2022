@@ -4,7 +4,8 @@
     sloppy_benchmark/2,
     sloppy_benchmark/3,
     solve/2,
-    solve_all/0
+    solve_all/0,
+    print_all/0
 ]).
 
 -type input_type() :: raw | groups_and_lines | lines | number_list.
@@ -84,3 +85,8 @@ parse_input(Day, Input) ->
         true  -> Day:parse_input(Input);
         false -> Input
     end.
+
+print_all() ->
+    Solutions = solve_all(),
+    Lines = [io_lib:format("    ~p~n", [S]) || S <- Solutions],
+    io:format("~s~n", [Lines]).

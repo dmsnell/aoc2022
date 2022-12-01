@@ -17,15 +17,16 @@ Start by cloning the repo and running `rebar3 shell` for a REPL.
 
 ```erlang
 aoc:solve_all() = [
+    {day1,p1,70764,{0.24,ms}}
 ].
 
-aoc:solve(day1, p1) = ?.
+aoc:solve(day1, p1) = {day1,p1,70764,{0.24,ms}}.
 
 {Day, Part, Answer, Runtime} = aoc:solve(day1, p1),
 Day = day1,
 Part = p1,
-Answer = ?,
-Runtime = ?.
+Answer = 70764,
+Runtime = {0.24,ms}.
 ```
 
 To develop with an open REPL call `r3:compile()` from within

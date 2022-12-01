@@ -7,26 +7,8 @@ input_type() -> lines.
 
 
 p1(Lines) ->
-    Elves = [lists:sum(Elf) || Elf <- input_groups(Lines)],
+    Elves = find_top_N(1, Lines),
     lists:max(Elves).
-
-
-input_groups(Lines) ->
-    input_groups(Lines, [[]]).
-
-input_groups([], [[] | Elves]) ->
-    Elves;
-
-input_groups([], Elves) ->
-    Elves;
-
-input_groups([<<>> | Lines], Elves) ->
-    input_groups(Lines, [[] | Elves]);
-
-input_groups([Line | Lines], [Elf | Elves]) ->
-    Calories = binary_to_integer(Line),
-    input_groups(Lines, [[Calories | Elf] | Elves]).
-
 
 -ifdef(EUNIT).
 -include_lib("eunit/include/eunit.hrl").
@@ -41,22 +23,22 @@ p1_test() ->
 
 
 p2(Lines) ->
-    lists:sum(find_top_three(Lines)).
+    lists:sum(find_top_N(3, Lines)).
 
 
-find_top_three(Lines) ->
-    find_top_three(Lines, 0, [0, 0, 0]).
+find_top_N(N, Lines) ->
+    find_top_N(Lines, 0, [0 || _ <- lists:seq(1, N)]).
 
 
-find_top_three([], Last, TopThree) ->
-    tl(lists:sort([Last | TopThree]));
+find_top_N([], Last, Top) ->
+    tl(lists:sort([Last | Top]));
 
-find_top_three([<<>> | Lines], Last, TopThree) ->
-    find_top_three(Lines, 0, tl(lists:sort([Last | TopThree])));
+find_top_N([<<>> | Lines], Last, Top) ->
+    find_top_N(Lines, 0, tl(lists:sort([Last | Top])));
 
-find_top_three([Line | Lines], Last, TopThree) ->
+find_top_N([Line | Lines], Last, Top) ->
     Calories = binary_to_integer(Line),
-    find_top_three(Lines, Last + Calories, TopThree).
+    find_top_N(Lines, Last + Calories, Top).
 
 
 -ifdef(EUNIT).

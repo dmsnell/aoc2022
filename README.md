@@ -39,3 +39,11 @@ the REPL to reload code with updates from your editor.
 % Reload code and re-run all solutions
 r3:compile(), aoc:solve_all().
 ```
+
+Fetching the input for each day
+-----
+
+It's possible to automatically fetch the input file for each day.
+To do this you will need to store a cookie for your logged-in session.
+Grab the cookie from an authenticated session in your browser and
+store the contents of the cookie's value in `priv/.aoc-session.cookie`.

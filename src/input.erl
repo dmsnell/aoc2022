@@ -18,8 +18,14 @@ groups_and_lines(Name) ->
 
 raw(Name) ->
     Path = filename:join([code:priv_dir(aoc2022), Name ++ ".txt"]),
-    {ok, Data} = file:read_file(Path),
-    Data.
+    case file:read_file(Path) of
+        {ok, Data} ->
+            Data;
+        {error, enoent} ->
+            {ok, Data} = fetch_day_input(Name),
+            file:write_file(Path, Data),
+            Data
+    end.
 
 -spec lines(Name :: string()) -> Lines :: list(binary()).
 
@@ -33,3 +39,30 @@ number_list(Name) ->
 
 numbers(Name) ->
     lists:map(fun binary_to_integer/1, binary:split(raw(Name), <<",">>, [global])).
+
+
+fetch_day_input(Day) ->
+    "day" ++ N = Day,
+    {ok, {{_, 200, _}, _Headers, Data}} = httpc:request(
+        get,
+        {
+            ["https://adventofcode.com/2022/day/", N, "/input"],
+            [{"Cookie", session_cookie()}]
+        },
+        [{ssl, ssl_options()}],
+        [{body_format, binary}]
+    ),
+    {ok, Data}.
+
+
+session_cookie() ->
+    {ok, Cookie} = file:read_file(filename:join(code:priv_dir(aoc2022), ".aoc-session.cookie")),
+    Cookie.
+
+
+ssl_options() ->
+    [
+        {verify, verify_peer},
+        {cacerts, public_key:cacerts_get()},
+        {customize_hostname_check, [{match_fun, public_key:pkix_verify_hostname_match_fun(https)}]}
+    ].

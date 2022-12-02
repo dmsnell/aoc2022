@@ -1,3 +1,5 @@
+priv/.aoc-session.cookie
+
 .rebar3
 _build
 _checkouts

@@ -47,7 +47,7 @@ sloppy_benchmark(Day, Part, Iterations) ->
             end
             || _ <- lists:seq(1, Iterations)
         ],
-        ms(lists:sum(Times) / Iterations)
+        {avg, ms(lists:sum(Times) / Iterations), min, ms(lists:min(Times))}
     end),
     #{
         measured  => Measured,
@@ -74,7 +74,8 @@ get_days() ->
       ;        (Name :: string(), number_list)      -> list(number())
       ;        (Name :: string(), raw)              -> binary().
 get_input(Name, Type) ->
-    input:Type(Name).
+    BaseName = string:replace(Name, "_faster", ""),
+    input:Type(BaseName).
 
 get_problems(Day) ->
     code:ensure_loaded(Day),

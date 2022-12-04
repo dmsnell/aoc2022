@@ -14,11 +14,7 @@ p1([], Priority) ->
     Priority;
 
 p1([Line | Lines], Priority) ->
-    [Left, Right] = mid_split(Line),
-    Types  = #{},
-    Types1 = set_types(Left, Types, 0, 1),
-    NewPriority = check_types(Right, Types1, 1),
-    p1(Lines, Priority + NewPriority).
+    p1(Lines, Priority + prioritize(mid_split(Line))).
 
 
 p2(Lines) ->
@@ -31,22 +27,27 @@ p2([], Priority) ->
     Priority;
 
 p2([A, B, C | Lines], Priority) ->
-    Types  = #{},
-    Types1 = set_types(A, Types, 0, 1),
-    Types2 = set_types(B, Types1, 1, 2),
-    NewPriority = check_types(C, Types2, 2),
-    p2(Lines, Priority + NewPriority).
+    p2(Lines, Priority + prioritize([A, B, C])).
+
+
+prioritize(Sacks) ->
+    prioritize(Sacks, #{}, 0).
+
+prioritize([Sack], Types, Count) ->
+    check_types(Sack, Types, Count);
+prioritize([Sack | Sacks], Types, Count) ->
+    prioritize(Sacks, set_types(Sack, Types, Count, Count + 1), Count + 1).
 
 
 set_types(<<>>, Types, _E, _V) ->
     Types;
-set_types(<<C, Cs/binary>>, Types, E, V) ->
+set_types(<<C, Cs/binary>>, Types, E, New) ->
     TC = type(C),
     Types1 = case maps:get(TC, Types, 0) of
-        E -> maps:put(TC, V, Types);
+        E -> maps:put(TC, New, Types);
         _ -> Types
     end,
-    set_types(Cs, Types1, E, V).
+    set_types(Cs, Types1, E, New).
 
 
 check_types(Line, Types, Threshold) ->

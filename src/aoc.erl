@@ -67,7 +67,7 @@ solve(Day, Part) ->
     end, infinity).
 
 get_days() ->
-    [list_to_atom(Module) || {[$d, $a, $y | _] = Module, _, _} <- code:all_available()].
+    [list_to_atom(Module) || {[$d, $a, $y, _] = Module, _, _} <- code:all_available()].
 
 -spec get_input(Name :: string(), lines)            -> list(binary())
       ;        (Name :: string(), groups_and_lines) -> list(list(binary()))

@@ -30,7 +30,7 @@ raw(Name) ->
 -spec lines(Name :: string()) -> Lines :: list(binary()).
 
 lines(Name) ->
-    binary:split(raw(Name), [<<"\r\n">>, <<"\n">>], [global]).
+    binary:split(raw(Name), [<<"\r\n">>, <<"\n">>], [global, trim]).
 
 -spec number_list(Name :: string()) -> Numbers :: list(integer()).
 

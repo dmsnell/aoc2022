@@ -74,7 +74,7 @@ get_days() ->
       ;        (Name :: string(), number_list)      -> list(number())
       ;        (Name :: string(), raw)              -> binary().
 get_input(Name, Type) ->
-    BaseName = string:replace(Name, "_faster", ""),
+    [BaseName] = string:replace(Name, "_faster", ""),
     input:Type(BaseName).
 
 get_problems(Day) ->

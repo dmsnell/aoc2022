@@ -4,6 +4,7 @@
     sloppy_benchmark/2,
     sloppy_benchmark/3,
     solve/2,
+    solve/3,
     solve_all/0,
     print_all/0
 ]).
@@ -58,10 +59,13 @@ sloppy_benchmark(Day, Part, Iterations) ->
 ms(MS) ->
     {round(MS * 1000) / 1000, ms}.
 
+
 solve(Day, Part) ->
+    solve(Day, Part, atom_to_list(Day)).
+
+solve(Day, Part, InputName) ->
     utils:isolated(fun () ->
         InputType = Day:input_type(),
-        InputName = atom_to_list(Day),
         {USecs, Value} = timer:tc(Day, Part, [parse_input(Day, get_input(InputName, InputType))]),
         {Day, Part, Value, {USecs / 1000, ms}}
     end, infinity).

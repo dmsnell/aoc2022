@@ -210,7 +210,7 @@ parent_path(Path) ->
 -include_lib("eunit/include/eunit.hrl").
 
 p1_test() ->
-    ?assertEqual(95437, p1(parse_input(input:lines("day7_a")))).
+    ?assertMatch({day7, p1, 95437, _}, aoc:solve(day7, p1, "day7_a")).
 
 p1_answer_test() ->
     ?assertMatch({day7, p1, 1644735, _}, aoc:solve(day7, p1)).
